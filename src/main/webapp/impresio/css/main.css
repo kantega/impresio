@@ -4,6 +4,10 @@ body {
     font-family: 'PT Sans', sans-serif;
 }
 
+a {
+    color:white;
+}
+
 img#logo {
     float: left;
     padding-right: 2em;
