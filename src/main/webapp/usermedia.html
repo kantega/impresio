@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script>
+        var $ = function (arg) {
+            return document.querySelector(arg);
+        };
+
+        var reqAnimFrame = window.requestAnimationFrame
+                || window.mozRequestAnimationFrame
+                || window.webkitRequestAnimationFrame || function (callback) {
+            setTimeout(callback, 1000 / 60);
+        };
+    </script>
+
+    <style type="text/css">
+
+        canvas:hover {
+
+            -webkit-filter: blur(2px);
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <video width="640" height="480" autoplay="autoplay">
+
+    </video>
+
+<canvas id="buffer" width="640" height="480" >
+
+</canvas>
+
+
+<script>
+
+    window.addEventListener('load', function () {
+
+        var canvas = $("canvas");
+        var video = $("video");
+        var ctx = canvas.getContext("2d");
+
+
+        if (window.navigator.webkitGetUserMedia) {
+            window.navigator.webkitGetUserMedia({ video:true, audio:false },
+                    gotUserMedia,
+                    userMediaFailed);
+        } else {
+            console.log('Web camera streaming not supported');
+        }
+
+        function gotUserMedia(stream) {
+            video.src = webkitURL.createObjectURL(stream);
+        }
+
+        function userMediaFailed(err) {
+            console.log("Could not getUserMedia: " + err)
+        }
+
+
+
+        function frameLoop() {
+
+            ctx.drawImage(video, 0, 0);
+            var image = ctx.getImageData(0, 0, 640, 480);
+            var data = image.data;
+
+            for(var i = 0; i < data.length; i+=4) {
+                var r = data[i];
+                var g = data[i+1];
+                var b = data[i+2];
+                data[i] = b;
+                data[i+2] = r;
+            }
+
+            ctx.putImageData(image, 0,0)
+            reqAnimFrame(frameLoop);
+        }
+
+        reqAnimFrame(frameLoop);
+    });
+</script>
+
+
+</body>
+
+</html>

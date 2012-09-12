@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script>
+        var $ = function(arg) {
+            return document.querySelector(arg);
+        };
+
+        var reqAnimFrame = window.requestAnimationFrame
+                || window.mozRequestAnimationFrame
+                || window.webkitRequestAnimationFrame || function(callback) {
+            setTimeout(callback, 1000 / 60);
+        };
+    </script>
+
+    <style type="text/css">
+        #range {
+            width: 580px;
+        }
+
+        video {
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <video>
+        <source src="heist.mp4" type="video/mp4"/>
+        <source src="heist.webm" type="video/webm"/>
+    </video>
+
+    <canvas id="buffer" width="640" height="360">
+
+    </canvas>
+
+        <div>
+
+            <button id="play">Play</button>
+
+            <input id="range" type="range" value="0" min="0" max="100">
+
+        </div>
+
+
+        <script>
+
+            $("#play").addEventListener("click", function() {
+
+                if($("video").paused) {
+                    $("video").play();
+                    $("#play").innerHTML = "Pause"
+                } else {
+                    $("video").pause();
+                    $("#play").innerHTML = "Play"
+                }
+
+            });
+
+
+            $("#range").addEventListener("change", function() {
+                var percent = $("#range").value;
+
+                $("video").currentTime = $("video").duration *percent/100;
+            });
+
+
+            $("video").addEventListener("timeupdate", function() {
+
+                var percentage = 100 * $("video").currentTime / $("video").duration;
+
+                $("#range").value = percentage;
+
+            });
+
+
+            var ctx = $("canvas").getContext("2d");
+
+            function frameLoop() {
+                ctx.drawImage($("video"), 0, 0);
+
+                var data = ctx.getImageData(0, 0, 640, 360).data
+
+                var red = 0;
+                var green = 0;
+                var blue = 0;
+
+                var numPixels = 0;
+
+                for(var i = 0; i < data.length; i+=4) {
+                    var r = data[i];
+                    var g = data[i+1];
+                    var b = data[i+2];
+                    if(r + g + b != 0) {
+                        red += r;
+                        green += g;
+                        blue += b;
+                        numPixels++;
+                    }
+
+
+                }
+
+                if(numPixels > 0) {
+                    var ar = Math.floor(red / numPixels);
+                    var ag = Math.floor(green / numPixels);
+                    var ab = Math.floor(blue / numPixels);
+                    ctx.fillStyle = "rgb(" +ar +"," + ag +"," + ab+")";
+                    ctx.strokeStyle = "rgb(255,255,255)";
+                    ctx.arc(95, 95, 75, 0, 360);
+                    ctx.fill();
+                    ctx.stroke();
+
+
+                }
+                reqAnimFrame(frameLoop)
+            }
+
+            reqAnimFrame(frameLoop)
+
+        </script>
+
+
+</body>
+
+</html>
