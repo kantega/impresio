@@ -68,8 +68,12 @@
 
         var slider = $("#sensitivity");
 
-        if (window.navigator.webkitGetUserMedia) {
-            window.navigator.webkitGetUserMedia({ video:true, audio:false },
+        var gum = window.navigator.getUserMedia ||
+                        window.navigator.webkitGetUserMedia ||
+                        window.navigator.mozGetUserMedia;
+
+        if (gum) {
+            gum.call(window.navigator, { video:true, audio:false },
                     gotUserMedia,
                     userMediaFailed);
         } else {
@@ -77,7 +81,8 @@
         }
 
         function gotUserMedia(stream) {
-            video.src = webkitURL.createObjectURL(stream);
+            var url = window.URL || window.webkitURL;
+            video.src = window.mozGetUserMedia ? stream : url.createObjectURL(stream);
         }
 
         function userMediaFailed(err) {

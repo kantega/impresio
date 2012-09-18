@@ -27,10 +27,14 @@ window.addEventListener('load', function() {
         console.log("Could not getUserMedia: " + err)
     }
 
-    if (window.navigator.getUserMedia) {
-        window.navigator.getUserMedia('video', gotUserMedia, userMediaFailed);
-    } else if (window.navigator.webkitGetUserMedia) {
-        window.navigator.webkitGetUserMedia({video:true, audio:false}, gotUserMedia, userMediaFailed);
+    var gum = window.navigator.getUserMedia ||
+        window.navigator.webkitGetUserMedia ||
+        window.navigator.mozGetUserMedia;
+
+    if (gum) {
+        gum.call(window.navigator, { video:true, audio:false },
+            gotUserMedia,
+            userMediaFailed);
     } else {
         console.log('Web camera streaming not supported');
     }
@@ -97,7 +101,7 @@ window.addEventListener('load', function() {
 
 
     $('#output').style['-webkit-transform'] = 'scale(' + scale + ')';
-    $('#output').style['-o-transform'] = 'scale(' + scale + ')';
+    $('#output').style.OTransform = 'scale(' + scale + ')';
 
     sensitivitySlider.addEventListener('change', function() {
         $('#sensitivitylabel').innerHTML = this.value;
@@ -315,6 +319,7 @@ window.addEventListener('load', function() {
             websiteFrame.style.width = (kwidth * scale / kscale) + 'px';
             websiteFrame.style.height = (kheight * scale / kscale) + 'px';
             websiteFrame.style['-webkit-transform'] = 'scale(' + kscale + ')'
+            websiteFrame.style.OTransform = 'scale(' + kscale + ')'
         } else {
             websiteFrame.style.display = 'none';
         }
@@ -441,6 +446,7 @@ window.addEventListener('load', function() {
         trans += ' scale(' + scale*$("#zoom").value/100 + ')';
 
         $('#output').style['-webkit-transform'] = trans;
+        $('#output').style.OTransform = trans;
 
     }
     $("#zoom").addEventListener("change", zoomPanTilt);

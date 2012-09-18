@@ -43,7 +43,7 @@
         <br>
 
         <input type="checkbox" id="showpreso" disabled> <label for="showpreso">Lightning talk</label>
-        <input type="file" id="presofiles" multiple accept="image/png" style="display: none">
+        <input type="file" id="presofiles" multiple="multiple" accept="image/png" style="visibility: hidden;width: 1px;height: 1px">
         [<a href="#" id="presoselect" title="Select PNG files for presentation">Select</a>]
         <input type="text" value="1" id="slidenr" size="2" disabled>
         <span id="numberofslides"></span>
@@ -95,7 +95,10 @@
             <input type="submit" id="emailsubmit" value="Send email">
         </div>
     </div>
-    <video id="video" src="glove_cut.mp4" width="320" height="240" style="display: none"></video>
+    <video id="video" width="320" height="240" style="display: none">
+        <source src="glove_cut.mp4" type="video/mp4"/>
+        <source src="glove_cut.webm" type="video/webm"/>
+    </video>
 
 </div>
 

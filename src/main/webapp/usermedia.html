@@ -26,7 +26,7 @@
 
 <body>
 
-    <video width="640" height="480" autoplay="autoplay">
+    <video width="640" height="480">
 
     </video>
 
@@ -43,9 +43,12 @@
         var video = $("video");
         var ctx = canvas.getContext("2d");
 
+        var gum = window.navigator.getUserMedia ||
+                window.navigator.webkitGetUserMedia ||
+                window.navigator.mozGetUserMedia;
 
-        if (window.navigator.webkitGetUserMedia) {
-            window.navigator.webkitGetUserMedia({ video:true, audio:false },
+        if (gum) {
+            gum.call(window.navigator, { video:true, audio:false },
                     gotUserMedia,
                     userMediaFailed);
         } else {
@@ -53,7 +56,9 @@
         }
 
         function gotUserMedia(stream) {
-            video.src = webkitURL.createObjectURL(stream);
+            var url = window.URL || window.webkitURL;
+            video.src = window.navigator.mozGetUserMedia ? stream : url.createObjectURL(stream);
+            video.play();
         }
 
         function userMediaFailed(err) {

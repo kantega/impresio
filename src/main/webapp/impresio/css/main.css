@@ -22,6 +22,7 @@ img#logo {
 
 #websiteFrame {
     -webkit-transform-origin: top left;
+    -o-transform-origin: top left;
     -webkit-transform: rotate(-5deg) scale(1);
     position: absolute;
     margin-left: 0;
@@ -44,6 +45,7 @@ img#logo {
     float: left;
     position: absolute;
     -webkit-transform-origin: top left;
+    -o-transform-origin: top left;
 }
 
 #backgroundimg {
