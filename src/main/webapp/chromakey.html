@@ -87,6 +87,7 @@
                     userMediaFailed);
         } else {
             console.log('Web camera streaming not supported');
+            alert('Web camera streaming not supported by your browser. Try Chrome or Opera');
         }
 
         function gotUserMedia(stream) {
@@ -157,7 +158,17 @@
     We're always <a href="http://kantega.no/jobb">looking for talented developers</a>
 
 </p>
+<script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-17108442-1']);
+    _gaq.push(['_trackPageview']);
 
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+</script>
 </body>
 
 </html>

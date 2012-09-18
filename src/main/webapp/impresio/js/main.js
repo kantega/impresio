@@ -37,6 +37,7 @@ window.addEventListener('load', function() {
             userMediaFailed);
     } else {
         console.log('Web camera streaming not supported');
+        alert('Web camera streaming not supported by your browser. Try Chrome or Opera');
     }
 
 
