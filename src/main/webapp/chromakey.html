@@ -18,7 +18,9 @@
     <style type="text/css">
 
         body {
-            background-image: url('images/stone.jpg')
+            font-family: sans-serif;
+            background-image: url('impresio/kantega-back.jpg');
+            color:white;
         }
         #selectedColor {
             display: inline-block;
@@ -37,10 +39,17 @@
 
 <body>
 
+<a href="http://kantega.no/jobb"><img src="impresio/images/kantega_logo.png"></a>
+<h1>Green screen effect in HTML5</h1>
+
+<p>This demo shows how to access the user's webcam, draw it into a HTML5, making pixels matching a
+    target color transparent</p>
+
 
     <video width="640" height="480" autoplay="autoplay">
 
     </video>
+
     <span id="selectedColor"></span>
 
 <canvas id="buffer" width="640" height="480" >
@@ -83,6 +92,7 @@
         function gotUserMedia(stream) {
             var url = window.URL || window.webkitURL;
             video.src = window.mozGetUserMedia ? stream : url.createObjectURL(stream);
+            video.play();
         }
 
         function userMediaFailed(err) {
@@ -132,12 +142,21 @@
 
             ctx.putImageData(image, 0,0)
             reqAnimFrame(frameLoop);
+            // Rendering bug in Chrome? Unless we do this
+            // the source <video> is not displayed until clicked..
+            video.style.display="inline-block";
         }
 
         reqAnimFrame(frameLoop);
     });
 </script>
 
+
+<p style="font-size: smaller;">Development of this code has been supported by <a href="http://kantega.no">Kantega</a>, a Norwegian IT consulting company 100% owned by employees.
+
+    We're always <a href="http://kantega.no/jobb">looking for talented developers</a>
+
+</p>
 
 </body>
 
